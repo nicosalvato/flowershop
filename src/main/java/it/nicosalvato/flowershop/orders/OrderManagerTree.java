@@ -1,29 +1,26 @@
 package it.nicosalvato.flowershop.orders;
 
+import it.medas.flowershop.products.Bundle;
+import it.medas.flowershop.products.InMemoryProductRepository;
+import it.medas.flowershop.products.ProductRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class OrderManagerTree {
 
-    private static HashMap<String, List<Bundle>> products;
-    static {
-        products = new HashMap<>();
-        List<Bundle> l = new ArrayList<>();
-        l.add(new Bundle(10, 12.99));
-        l.add(new Bundle(5, 6.99));
-        products.put("R12", l);
-    }
+    private static final ProductRepository repository = new InMemoryProductRepository();
 
     public String processOrder(InputStream order) {
         String line = new BufferedReader(
@@ -34,9 +31,7 @@ public class OrderManagerTree {
         int orderSize = Integer.parseInt(items[0]);
         String productCode = items[1];
 
-        List<Bundle> sortedBundles = products.get(productCode).stream()
-                .sorted((b1, b2) -> Integer.compare(b2.getBundleSize(), b1.getBundleSize()))
-                .toList();
+        List<Bundle> sortedBundles = repository.findAllByProductCode(productCode).stream().sorted().toList();
         System.out.println("Sorted bundles: " + sortedBundles.stream().map(Bundle::getBundleSize).map(String::valueOf).collect(Collectors.joining(", ")));
 
         int[] tree = ArrayUtils.addAll(new int[] {orderSize}, buildTree(orderSize, 0, sortedBundles));
@@ -44,6 +39,8 @@ public class OrderManagerTree {
                 .filter(i -> i % 2 == 1)
                 .mapToObj(i -> tree[i])
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+        bundlesCount.entrySet().forEach(System.out::print);
         DeliveryItem deliveryItem = createDeliveredItem(bundlesCount, productCode);
         return deliveryItem.prettyPrint();
     }
@@ -71,8 +68,7 @@ public class OrderManagerTree {
                     return buildTree(amount, ++bundleIdx, bundles);
                 }
             } else {
-                // No more bundle options, reach the first level where previous bundle was involved and rebuild a
-                // subtree with different bundle option
+                // No more bundle options, we're doomed
                 return null;
             }
         }
@@ -84,15 +80,10 @@ public class OrderManagerTree {
     private DeliveryItem createDeliveredItem(Map<Integer, Long> bundlesCount, String productCode) {
         List<ItemBundle> itemBundles = bundlesCount.entrySet()
                 .stream()
-                .map(entry -> new ItemBundle(Math.toIntExact(entry.getValue()), products.get(productCode).stream().filter(bundle -> bundle.getBundleSize() == entry.getKey()).findFirst().orElseThrow())).toList();
+                .map(entry -> new ItemBundle(Math.toIntExact(entry.getValue()), repository.findAllByProductCode(productCode).stream().filter(bundle -> bundle.getBundleSize() == entry.getKey()).findFirst().orElseThrow()))
+                .sorted(Comparator.comparing(OrderManagerTree.ItemBundle::getBundle))
+                .toList();
         return new DeliveryItem(productCode, itemBundles);
-    }
-
-    @Getter
-    @AllArgsConstructor
-    static class Bundle {
-        private int bundleSize;
-        private double price;
     }
 
     @Getter
