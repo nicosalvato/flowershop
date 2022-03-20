@@ -1,4 +1,4 @@
-package it.medas.flowershop.products;
+package it.nicosalvato.flowershop.products;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

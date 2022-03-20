@@ -1,8 +1,8 @@
 package it.nicosalvato.flowershop.orders;
 
-import it.medas.flowershop.products.Bundle;
-import it.medas.flowershop.products.InMemoryProductRepository;
-import it.medas.flowershop.products.ProductRepository;
+import it.nicosalvato.flowershop.products.Bundle;
+import it.nicosalvato.flowershop.products.InMemoryProductRepository;
+import it.nicosalvato.flowershop.products.ProductRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.apache.commons.lang3.ArrayUtils;

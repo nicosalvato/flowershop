@@ -1,4 +1,4 @@
-package it.medas.flowershop.products;
+package it.nicosalvato.flowershop.products;
 
 import java.util.Set;
 import java.util.TreeSet;
