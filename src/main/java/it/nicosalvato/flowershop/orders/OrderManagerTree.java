@@ -12,10 +12,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -39,9 +36,11 @@ public class OrderManagerTree {
         Map<Integer, Integer> levelIndexMap = new HashMap<>();
         levelIndexMap.put(0, 0);
         int[] tree = ArrayUtils.addAll(new int[] {orderSize}, buildTree(orderSize, 0, levelIndexMap, sortedBundles));
-        Map<Integer, Long> bundlesCount = IntStream.range(0, tree.length)
+        System.out.println("Tree: " + ArrayUtils.toString(tree));
+        int[] deliverySubTree = getDeliverySubTree(tree, orderSize);
+        Map<Integer, Long> bundlesCount = IntStream.range(0, deliverySubTree.length)
                 .filter(i -> i % 2 == 1)
-                .mapToObj(i -> tree[i])
+                .mapToObj(i -> deliverySubTree[i])
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
         bundlesCount.entrySet().forEach(System.out::print);
@@ -69,7 +68,9 @@ public class OrderManagerTree {
                     System.out.println("Level: " + i + ", bundle size: " + bundles.get(levelIndexMap.get(i)).getBundleSize() + ", amount: " + oldAmount);
                 }
                 levelIndexMap.put(lastLeveWithHope.getKey(), lastLeveWithHope.getValue() + 1);
-                return buildTree(oldAmount, lastLeveWithHope.getKey(), levelIndexMap, bundles);
+                int[] tree = {oldAmount};
+                return ArrayUtils.addAll(tree, buildTree(oldAmount, lastLeveWithHope.getKey(), levelIndexMap, bundles));
+//                return buildTree(oldAmount, lastLeveWithHope.getKey(), levelIndexMap, bundles);
             } else {
                 levelIndexMap.put(level, bundleIdx + 1);
                 return buildTree(amount, level, levelIndexMap, bundles);
@@ -82,12 +83,22 @@ public class OrderManagerTree {
     }
 
     private DeliveryItem createDeliveredItem(Map<Integer, Long> bundlesCount, String productCode) {
+        System.out.println("Bundle count: " + ArrayUtils.toString(bundlesCount));
         List<ItemBundle> itemBundles = bundlesCount.entrySet()
                 .stream()
-                .map(entry -> new ItemBundle(Math.toIntExact(entry.getValue()), repository.findAllByProductCode(productCode).stream().filter(bundle -> bundle.getBundleSize() == entry.getKey()).findFirst().orElseThrow()))
+                .map(entry -> new ItemBundle(Math.toIntExact(entry.getValue()), repository.findAllByProductCode(productCode).stream()
+                        .filter(bundle -> bundle.getBundleSize() == entry.getKey())
+                        .findFirst()
+                        .orElseThrow()))
                 .sorted(Comparator.comparing(OrderManagerTree.ItemBundle::getBundle))
                 .toList();
         return new DeliveryItem(productCode, itemBundles);
+    }
+
+    private int[] getDeliverySubTree(int[] tree, int orderSize) {
+        int lastRootIndex = Arrays.stream(tree).boxed().toList().lastIndexOf(orderSize);
+        int rootIndex = lastRootIndex > 0 && tree[lastRootIndex - 1] == orderSize ? lastRootIndex - 1 : lastRootIndex;
+        return Arrays.copyOfRange(tree, rootIndex, tree.length);
     }
 
     @Getter
@@ -124,7 +135,7 @@ public class OrderManagerTree {
         private Bundle bundle;
 
         String prettyPrint() {
-            return " - " + amount + " x " + bundle.getBundleSize() + " $" + new DecimalFormat("0.00").format(bundle.getPrice() * amount);
+            return " - " + amount + " x " + bundle.getBundleSize() + " $" + new DecimalFormat("0.00").format(bundle.getPrice());
         }
     }
 }
