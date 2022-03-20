@@ -48,4 +48,46 @@ public class OrderManagerTreeTest {
 
         Assertions.assertEquals(expectedDelivery, orderManager.processOrder(order));
     }
+
+    @Test
+    @DisplayName("Test order 3 (13 T58)")
+    void testOrder3Processing() throws FileNotFoundException {
+        FileInputStream order = new FileInputStream("src/test/resources/order_3.txt");
+        String expectedDelivery = new BufferedReader(
+                new InputStreamReader(
+                        new FileInputStream("src/test/resources/delivery_3.txt"),
+                        StandardCharsets.UTF_8))
+                .lines()
+                .collect(Collectors.joining("\n"));
+
+        Assertions.assertEquals(expectedDelivery, orderManager.processOrder(order));
+    }
+
+    @Test
+    @DisplayName("Test order 4 (10 R12, 15 L09, 13 T58)")
+    void testOrder4Processing() throws FileNotFoundException {
+        FileInputStream order = new FileInputStream("src/test/resources/order_4.txt");
+        String expectedDelivery = new BufferedReader(
+                new InputStreamReader(
+                        new FileInputStream("src/test/resources/delivery_4.txt"),
+                        StandardCharsets.UTF_8))
+                .lines()
+                .collect(Collectors.joining("\n"));
+
+        Assertions.assertEquals(expectedDelivery, orderManager.processOrder(order));
+    }
+
+    @Test
+    @DisplayName("Test unsupported order (9 R12)")
+    void testUnsupportedOrderProcessing() throws FileNotFoundException {
+        FileInputStream order = new FileInputStream("src/test/resources/order_5.txt");
+        String expectedDelivery = new BufferedReader(
+                new InputStreamReader(
+                        new FileInputStream("src/test/resources/delivery_5.txt"),
+                        StandardCharsets.UTF_8))
+                .lines()
+                .collect(Collectors.joining("\n"));
+
+        Assertions.assertEquals(expectedDelivery, orderManager.processOrder(order));
+    }
 }
