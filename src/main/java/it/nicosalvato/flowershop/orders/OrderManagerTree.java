@@ -1,6 +1,5 @@
 package it.nicosalvato.flowershop.orders;
 
-import it.nicosalvato.flowershop.delivery.BundleDelivery;
 import it.nicosalvato.flowershop.delivery.ProductDelivery;
 import it.nicosalvato.flowershop.delivery.services.ProductDeliveryService;
 import it.nicosalvato.flowershop.products.Bundle;
@@ -12,7 +11,10 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -23,10 +25,12 @@ public class OrderManagerTree {
     private static final ProductDeliveryService productDeliveryService = ProductDeliveryService.getInstance();
 
     public String processOrder(InputStream order) {
-        String line = new BufferedReader(
+        return new BufferedReader(
                 new InputStreamReader(order, StandardCharsets.UTF_8))
-                .lines().findFirst().orElseThrow();
+                .lines().map(this::processOrderLine).collect(Collectors.joining("\n"));
+    }
 
+    private String processOrderLine(String line) {
         String[] items = line.split(" ");
         int orderSize = Integer.parseInt(items[0]);
         String productCode = items[1];
@@ -49,7 +53,7 @@ public class OrderManagerTree {
         return productDelivery.prettyPrint();
     }
 
-    private int[] buildTree(int amount, int level, Map<Integer, Integer> levelIndexMap, List<Bundle> bundles) {
+     private int[] buildTree(int amount, int level, Map<Integer, Integer> levelIndexMap, List<Bundle> bundles) {
         int bundleIdx = levelIndexMap.get(level);
         int bundleSize = bundles.get(bundleIdx).getBundleSize();
         int remainder = amount - bundleSize;
