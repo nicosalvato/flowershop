@@ -19,11 +19,12 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class OrderManagerTree {
+public class OrderManagerTree implements OrderManager {
 
     private static final ProductRepository repository = new InMemoryProductRepository();
     private static final ProductDeliveryService productDeliveryService = ProductDeliveryService.getInstance();
 
+    @Override
     public String processOrder(InputStream order) {
         return new BufferedReader(
                 new InputStreamReader(order, StandardCharsets.UTF_8))

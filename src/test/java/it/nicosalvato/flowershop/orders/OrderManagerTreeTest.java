@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 public class OrderManagerTreeTest {
 
-    OrderManagerTree orderManager;
+    OrderManager orderManager;
 
     @BeforeEach
     void setUp() {
@@ -84,6 +84,20 @@ public class OrderManagerTreeTest {
         String expectedDelivery = new BufferedReader(
                 new InputStreamReader(
                         new FileInputStream("src/test/resources/delivery_5.txt"),
+                        StandardCharsets.UTF_8))
+                .lines()
+                .collect(Collectors.joining("\n"));
+
+        Assertions.assertEquals(expectedDelivery, orderManager.processOrder(order));
+    }
+
+    @Test
+    @DisplayName("Test tricky subtree order (15 T58)")
+    void testOrder6Processing() throws FileNotFoundException {
+        FileInputStream order = new FileInputStream("src/test/resources/order_6.txt");
+        String expectedDelivery = new BufferedReader(
+                new InputStreamReader(
+                        new FileInputStream("src/test/resources/delivery_6.txt"),
                         StandardCharsets.UTF_8))
                 .lines()
                 .collect(Collectors.joining("\n"));
