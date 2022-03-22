@@ -1,5 +1,6 @@
 package it.nicosalvato.flowershop.orders;
 
+import it.nicosalvato.flowershop.products.services.ProductService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -9,15 +10,18 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.stream.Collectors;
 
 public class OrderManagerTest {
 
     OrderManager orderManager;
+    ProductService productService = ProductService.getInstance();
 
     @BeforeEach
     void setUp() {
         orderManager = new EfficientOrderManager();
+        productService.readProductsFromFile("src/test/resources/configuration_3.json");
     }
 
     @Test

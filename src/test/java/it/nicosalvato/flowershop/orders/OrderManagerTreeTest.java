@@ -1,5 +1,6 @@
 package it.nicosalvato.flowershop.orders;
 
+import it.nicosalvato.flowershop.products.services.ProductService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,10 +16,12 @@ import java.util.stream.Collectors;
 public class OrderManagerTreeTest {
 
     OrderManager orderManager;
+    ProductService productService = ProductService.getInstance();
 
     @BeforeEach
     void setUp() {
-        orderManager = new OrderManagerTree();
+        orderManager = new EfficientOrderManager();
+        productService.readProductsFromFile("src/test/resources/configuration_3.json");
     }
 
     @Test
