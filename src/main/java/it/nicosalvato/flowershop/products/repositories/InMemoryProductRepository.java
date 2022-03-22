@@ -8,34 +8,21 @@ import java.util.TreeSet;
 
 public class InMemoryProductRepository implements ProductRepository {
 
-    private static Set<Product> products;
-    static {
-        products = new TreeSet<>();
-        Product roses = new Product("Roses", "R12");
-        Set<Bundle> rosesBundles = Set.of(
-                new Bundle(5, 6.99, roses),
-                new Bundle(10, 12.99, roses)
-        );
-        roses.setBundles(rosesBundles);
-        products.add(roses);
+    private InMemoryProductRepository() {}
 
-        Product lilies = new Product("Lilies", "L09");
-        Set<Bundle> liliesBundles = Set.of(
-                new Bundle(3, 9.95, lilies),
-                new Bundle(6, 16.95, lilies),
-                new Bundle(9, 24.95, lilies)
-        );
-        lilies.setBundles(liliesBundles);
-        products.add(lilies);
+    private static class SingletonHolder {
+        public static final ProductRepository instance = new InMemoryProductRepository();
+    }
 
-        Product tulips = new Product("Tulips", "T58");
-        Set<Bundle> tulipsBundles = Set.of(
-                new Bundle(3, 5.95, tulips),
-                new Bundle(5, 9.95, tulips),
-                new Bundle(9, 16.99, tulips)
-        );
-        tulips.setBundles(tulipsBundles);
-        products.add(tulips);
+    public static ProductRepository getInstance() {
+        return InMemoryProductRepository.SingletonHolder.instance;
+    }
+
+    private static final Set<Product> products = new TreeSet<>();
+
+    @Override
+    public int count() {
+        return products.size();
     }
 
     @Override
@@ -56,5 +43,15 @@ public class InMemoryProductRepository implements ProductRepository {
                 .findFirst()
                 .map(Product::getBundles)
                 .orElseThrow();
+    }
+
+    @Override
+    public void save(Product product) {
+        products.add(product);
+    }
+
+    @Override
+    public void clear() {
+        products.clear();
     }
 }

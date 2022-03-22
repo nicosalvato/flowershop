@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Roses",
+    "code": "R12",
+    "bundles": [
+      {
+        "bundleSize": 3,
+        "price": 5.95
+      }
+    ]
+  }
+]

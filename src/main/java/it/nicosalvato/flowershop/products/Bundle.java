@@ -1,18 +1,18 @@
 package it.nicosalvato.flowershop.products;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.util.Comparator;
 import java.util.Objects;
 
 @Getter
-@RequiredArgsConstructor
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Bundle implements Comparable<Bundle> {
 
-    private final int bundleSize;
-    private final double price;
-    private final Product product;
+    private int bundleSize;
+    private double price;
 
     @Override
     public int compareTo(Bundle o) {
@@ -24,11 +24,11 @@ public class Bundle implements Comparable<Bundle> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Bundle bundle = (Bundle) o;
-        return getBundleSize() == bundle.getBundleSize() && getProduct().equals(bundle.getProduct());
+        return getBundleSize() == bundle.getBundleSize() && getPrice() == bundle.getPrice();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getBundleSize(), getProduct());
+        return Objects.hash(getBundleSize(), getPrice());
     }
 }

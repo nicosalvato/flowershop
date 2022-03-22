@@ -16,7 +16,7 @@ public class ProductDeliveryService {
     }
 
     private static class SingletonHolder {
-        public static final ProductDeliveryService instance = new ProductDeliveryService(new InMemoryProductRepository());
+        public static final ProductDeliveryService instance = new ProductDeliveryService(InMemoryProductRepository.getInstance());
     }
 
     public static ProductDeliveryService getInstance() {

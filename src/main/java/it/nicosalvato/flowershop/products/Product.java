@@ -1,19 +1,18 @@
 package it.nicosalvato.flowershop.products;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Objects;
 import java.util.Set;
 
 @Getter
 @Setter
-@RequiredArgsConstructor()
+@NoArgsConstructor
+@AllArgsConstructor
 public class Product implements Comparable<Product> {
 
-    private final String name;
-    private final String code;
+    private String name;
+    private String code;
     private Set<Bundle> bundles;
 
     @Override
