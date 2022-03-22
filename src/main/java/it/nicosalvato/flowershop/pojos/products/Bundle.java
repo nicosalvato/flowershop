@@ -1,4 +1,4 @@
-package it.nicosalvato.flowershop.products;
+package it.nicosalvato.flowershop.pojos.products;
 
 import lombok.*;
 

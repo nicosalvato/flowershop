@@ -1,10 +1,10 @@
-package it.nicosalvato.flowershop.orders;
+package it.nicosalvato.flowershop.managers;
 
-import it.nicosalvato.flowershop.delivery.ProductDelivery;
-import it.nicosalvato.flowershop.delivery.services.ProductDeliveryService;
-import it.nicosalvato.flowershop.products.Bundle;
-import it.nicosalvato.flowershop.products.repositories.InMemoryProductRepository;
-import it.nicosalvato.flowershop.products.repositories.ProductRepository;
+import it.nicosalvato.flowershop.pojos.delivery.delivery.ProductDelivery;
+import it.nicosalvato.flowershop.services.ProductDeliveryService;
+import it.nicosalvato.flowershop.pojos.products.Bundle;
+import it.nicosalvato.flowershop.repositories.InMemoryProductRepository;
+import it.nicosalvato.flowershop.repositories.ProductRepository;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.BufferedReader;

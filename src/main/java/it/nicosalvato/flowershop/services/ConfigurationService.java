@@ -1,11 +1,11 @@
-package it.nicosalvato.flowershop.products.services;
+package it.nicosalvato.flowershop.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.nicosalvato.flowershop.products.Product;
-import it.nicosalvato.flowershop.products.repositories.InMemoryProductRepository;
-import it.nicosalvato.flowershop.products.repositories.ProductRepository;
+import it.nicosalvato.flowershop.pojos.products.Product;
+import it.nicosalvato.flowershop.repositories.InMemoryProductRepository;
+import it.nicosalvato.flowershop.repositories.ProductRepository;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -13,23 +13,23 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-public class ProductService {
+public class ConfigurationService {
 
     ProductRepository productRepository;
 
-    private ProductService(ProductRepository productRepository) {
+    private ConfigurationService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
     private static class SingletonHolder {
-        public static final ProductService instance = new ProductService(InMemoryProductRepository.getInstance());
+        public static final ConfigurationService instance = new ConfigurationService(InMemoryProductRepository.getInstance());
     }
 
-    public static ProductService getInstance() {
-        return ProductService.SingletonHolder.instance;
+    public static ConfigurationService getInstance() {
+        return ConfigurationService.SingletonHolder.instance;
     }
 
-    public void readProductsFromJson(String json) {
+    public void loadFromJson(String json) {
         try {
             List<Product> products = new ObjectMapper().readValue(json, new TypeReference<List<Product>>() {});
             products.forEach(product -> productRepository.save(product));
@@ -38,10 +38,10 @@ public class ProductService {
         }
     }
 
-    public void readProductsFromFile(String path) {
+    public void loadFromFile(String path) {
         try {
             String json = Files.readString(Path.of(path), StandardCharsets.US_ASCII);
-            readProductsFromJson(json);
+            loadFromJson(json);
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }

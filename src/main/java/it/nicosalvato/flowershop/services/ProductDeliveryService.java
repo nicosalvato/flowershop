@@ -1,9 +1,9 @@
-package it.nicosalvato.flowershop.delivery.services;
+package it.nicosalvato.flowershop.services;
 
-import it.nicosalvato.flowershop.delivery.BundleDelivery;
-import it.nicosalvato.flowershop.delivery.ProductDelivery;
-import it.nicosalvato.flowershop.products.repositories.InMemoryProductRepository;
-import it.nicosalvato.flowershop.products.repositories.ProductRepository;
+import it.nicosalvato.flowershop.pojos.delivery.delivery.BundleDelivery;
+import it.nicosalvato.flowershop.pojos.delivery.delivery.ProductDelivery;
+import it.nicosalvato.flowershop.repositories.InMemoryProductRepository;
+import it.nicosalvato.flowershop.repositories.ProductRepository;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Comparator;

@@ -1,4 +1,4 @@
-package it.nicosalvato.flowershop.orders;
+package it.nicosalvato.flowershop.managers;
 
 import java.io.InputStream;
 

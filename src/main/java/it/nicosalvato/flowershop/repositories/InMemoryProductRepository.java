@@ -1,7 +1,7 @@
-package it.nicosalvato.flowershop.products.repositories;
+package it.nicosalvato.flowershop.repositories;
 
-import it.nicosalvato.flowershop.products.Bundle;
-import it.nicosalvato.flowershop.products.Product;
+import it.nicosalvato.flowershop.pojos.products.Bundle;
+import it.nicosalvato.flowershop.pojos.products.Product;
 
 import java.util.Set;
 import java.util.TreeSet;

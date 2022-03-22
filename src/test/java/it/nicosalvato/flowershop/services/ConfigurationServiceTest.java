@@ -1,8 +1,8 @@
-package it.nicosalvato.flowershop.products.services;
+package it.nicosalvato.flowershop.services;
 
-import it.nicosalvato.flowershop.products.Product;
-import it.nicosalvato.flowershop.products.repositories.InMemoryProductRepository;
-import it.nicosalvato.flowershop.products.repositories.ProductRepository;
+import it.nicosalvato.flowershop.repositories.InMemoryProductRepository;
+import it.nicosalvato.flowershop.repositories.ProductRepository;
+import it.nicosalvato.flowershop.services.ConfigurationService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -14,9 +14,9 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 
-public class ProductServiceTest {
+public class ConfigurationServiceTest {
 
-    ProductService productService = ProductService.getInstance();
+    ConfigurationService configurationService = ConfigurationService.getInstance();
     ProductRepository productRepository = InMemoryProductRepository.getInstance();
 
     @AfterEach
@@ -33,7 +33,7 @@ public class ProductServiceTest {
                 .lines()
                 .collect(Collectors.joining("\n"));
 
-        productService.readProductsFromJson(configuration);
+        configurationService.loadFromJson(configuration);
         Assertions.assertEquals(1, productRepository.count());
     }
 
@@ -46,7 +46,7 @@ public class ProductServiceTest {
                 .lines()
                 .collect(Collectors.joining("\n"));
 
-        productService.readProductsFromJson(configuration);
+        configurationService.loadFromJson(configuration);
         Assertions.assertEquals(1, productRepository.count());
         Assertions.assertEquals(1, productRepository.findByCode("R12").getBundles().size());
     }
@@ -60,7 +60,7 @@ public class ProductServiceTest {
                 .lines()
                 .collect(Collectors.joining("\n"));
 
-        productService.readProductsFromJson(configuration);
+        configurationService.loadFromJson(configuration);
         Assertions.assertEquals(3, productRepository.count());
         Assertions.assertEquals(2, productRepository.findByCode("R12").getBundles().size());
         Assertions.assertEquals(3, productRepository.findByCode("L09").getBundles().size());
