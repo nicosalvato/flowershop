@@ -1,6 +1,6 @@
 package it.nicosalvato.flowershop.managers;
 
-import it.nicosalvato.flowershop.excaptions.UndeliverableOrderException;
+import it.nicosalvato.flowershop.exceptions.UndeliverableOrderException;
 import it.nicosalvato.flowershop.pojos.products.Bundle;
 import it.nicosalvato.flowershop.repositories.InMemoryProductRepository;
 import it.nicosalvato.flowershop.repositories.ProductRepository;

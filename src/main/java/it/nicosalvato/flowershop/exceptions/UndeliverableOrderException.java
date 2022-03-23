@@ -1,4 +1,4 @@
-package it.nicosalvato.flowershop.excaptions;
+package it.nicosalvato.flowershop.exceptions;
 
 public class UndeliverableOrderException extends RuntimeException {
     public UndeliverableOrderException(String msg) {

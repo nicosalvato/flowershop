@@ -1,6 +1,8 @@
 plugins {
     id 'java'
     id "io.freefair.lombok" version "6.4.1"
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'application'
 }
 
 group 'it.nicosalvato'
@@ -20,3 +22,21 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+shadowJar {
+    manifest {
+        attributes 'Main-Class': 'it.nicosalvato.flowershop.Main'
+    }
+}
+
+application {
+    // Define the main class for the application.
+    mainClass = 'it.nicosalvato.flowershop.Main'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+

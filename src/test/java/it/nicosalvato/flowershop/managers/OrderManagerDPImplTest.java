@@ -94,20 +94,6 @@ public class OrderManagerDPImplTest {
     }
 
     @Test
-    @DisplayName("Test tricky subtree order (15 T58)")
-    void testOrder6Processing() throws FileNotFoundException {
-        FileInputStream order = new FileInputStream("src/test/resources/order_6.txt");
-        String expectedDelivery = new BufferedReader(
-                new InputStreamReader(
-                        new FileInputStream("src/test/resources/delivery_6.txt"),
-                        StandardCharsets.UTF_8))
-                .lines()
-                .collect(Collectors.joining("\n"));
-
-        Assertions.assertEquals(expectedDelivery, orderManager.processOrder(order));
-    }
-
-    @Test
     @DisplayName("Test big flower order (1208 L09)")
     void testOrder7Processing() throws FileNotFoundException {
         FileInputStream order = new FileInputStream("src/test/resources/order_7.txt");
