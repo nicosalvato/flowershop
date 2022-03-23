@@ -1,2 +1,2 @@
-# Flowershop
-A flowershop order processor for a code interview.
+# Flower Shop
+A flower order processor for a code interview.
