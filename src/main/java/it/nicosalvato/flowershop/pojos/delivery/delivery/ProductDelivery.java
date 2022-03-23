@@ -10,6 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ProductDelivery {
     private String code;
+    private int orderSize;
     private List<BundleDelivery> bundleDeliveryList;
 
     public double getTotal() {
@@ -18,17 +19,15 @@ public class ProductDelivery {
                 .reduce(0.0, Double::sum);
     }
 
-    public int getAmount() {
-        return bundleDeliveryList.stream()
-                .mapToInt(item -> item.getAmount() * item.getBundle().getBundleSize())
-                .sum();
-    }
-
     public String prettyPrint() {
-        StringBuilder sb = new StringBuilder(this.getAmount() + " " + code + " $" + new DecimalFormat("0.00").format(this.getTotal()));
+        StringBuilder sb = new StringBuilder(orderSize + " " + code + " $" + new DecimalFormat("0.00").format(this.getTotal()));
         for (BundleDelivery item: bundleDeliveryList) {
             sb.append("\n").append(item.prettyPrint());
         }
         return sb.toString();
+    }
+
+    public String prettyPrint(String msg) {
+        return orderSize + " " + code + " $" + new DecimalFormat("0.00").format(this.getTotal()) + "\n - " + msg;
     }
 }

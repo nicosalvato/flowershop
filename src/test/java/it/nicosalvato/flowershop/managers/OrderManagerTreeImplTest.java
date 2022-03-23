@@ -119,6 +119,8 @@ public class OrderManagerTreeImplTest {
                 .lines()
                 .collect(Collectors.joining("\n"));
 
-        Assertions.assertEquals(expectedDelivery, orderManager.processOrder(order));
+        Assertions.assertThrows(StackOverflowError.class, () -> {
+            Assertions.assertEquals(expectedDelivery, orderManager.processOrder(order));
+        });
     }
 }

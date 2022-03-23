@@ -3,5 +3,8 @@ package it.nicosalvato.flowershop.managers;
 import java.io.InputStream;
 
 public interface OrderManager {
-    public String processOrder(InputStream order);
+
+    String DEFAULT_UNDELIVERABLE_PRODUCT_EX_MESSAGE = "Unable to deliver order";
+
+    String processOrder(InputStream order);
 }
