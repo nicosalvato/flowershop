@@ -16,7 +16,7 @@ plugin:
 ```
 
 ### Exacutable JVM App
-Download [flowershop-1.0.zip](https://github.com/nicosalvato/flowershop/releases/latest/download/flowershop-1.0.zip),
+Download [flowershop-1.0.zip](https://github.com/nicosalvato/flowershop/releases/download/1.0/flowershop-1.0.zip),
 unzip it and launch it form the command line:
 ```shell
 ./flowershop <order_file> <json_configuration_file> [algorithm]
