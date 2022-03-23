@@ -14,7 +14,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class EfficientOrderManager implements OrderManager {
+public class OrderManagerDPImpl implements OrderManager {
 
     private static final ProductRepository repository = InMemoryProductRepository.getInstance();
     private static final ProductDeliveryService productDeliveryService = ProductDeliveryService.getInstance();

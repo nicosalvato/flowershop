@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -12,14 +13,14 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 
-public class OrderManagerTest {
+public class OrderManagerTreeImplTest {
 
     OrderManager orderManager;
     ConfigurationService configurationService = ConfigurationService.getInstance();
 
     @BeforeEach
     void setUp() {
-        orderManager = new EfficientOrderManager();
+        orderManager = new OrderManagerTreeImpl();
         configurationService.loadFromFile("src/test/resources/configuration_3.json");
     }
 
@@ -100,6 +101,20 @@ public class OrderManagerTest {
         String expectedDelivery = new BufferedReader(
                 new InputStreamReader(
                         new FileInputStream("src/test/resources/delivery_6.txt"),
+                        StandardCharsets.UTF_8))
+                .lines()
+                .collect(Collectors.joining("\n"));
+
+        Assertions.assertEquals(expectedDelivery, orderManager.processOrder(order));
+    }
+
+    @Test
+    @DisplayName("Test big flower order (1208 L09)")
+    void testOrder7Processing() throws FileNotFoundException {
+        FileInputStream order = new FileInputStream("src/test/resources/order_7.txt");
+        String expectedDelivery = new BufferedReader(
+                new InputStreamReader(
+                        new FileInputStream("src/test/resources/delivery_7.txt"),
                         StandardCharsets.UTF_8))
                 .lines()
                 .collect(Collectors.joining("\n"));
