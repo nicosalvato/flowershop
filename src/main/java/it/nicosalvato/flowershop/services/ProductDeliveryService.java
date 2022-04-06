@@ -1,7 +1,7 @@
 package it.nicosalvato.flowershop.services;
 
-import it.nicosalvato.flowershop.pojos.delivery.delivery.BundleDelivery;
-import it.nicosalvato.flowershop.pojos.delivery.delivery.ProductDelivery;
+import it.nicosalvato.flowershop.pojos.delivery.BundleDelivery;
+import it.nicosalvato.flowershop.pojos.delivery.ProductDelivery;
 import it.nicosalvato.flowershop.repositories.InMemoryProductRepository;
 import it.nicosalvato.flowershop.repositories.ProductRepository;
 
@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Map;
 
 public class ProductDeliveryService {
+
+    private final ProductRepository productRepository;
+
     private ProductDeliveryService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
@@ -23,7 +26,6 @@ public class ProductDeliveryService {
         return SingletonHolder.instance;
     }
 
-    private ProductRepository productRepository;
 
     public ProductDelivery createProductDelivery(String productCode, int orderSize, Map<Integer, Long> bundlesCount) {
         List<BundleDelivery> itemBundles = null;

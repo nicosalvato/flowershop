@@ -2,7 +2,6 @@ package it.nicosalvato.flowershop.services;
 
 import it.nicosalvato.flowershop.repositories.InMemoryProductRepository;
 import it.nicosalvato.flowershop.repositories.ProductRepository;
-import it.nicosalvato.flowershop.services.ConfigurationService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

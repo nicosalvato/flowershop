@@ -1,4 +1,4 @@
-package it.nicosalvato.flowershop.pojos.delivery.delivery;
+package it.nicosalvato.flowershop.pojos.delivery;
 
 import it.nicosalvato.flowershop.pojos.products.Bundle;
 import lombok.AllArgsConstructor;
