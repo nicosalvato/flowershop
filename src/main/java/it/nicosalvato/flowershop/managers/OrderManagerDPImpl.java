@@ -51,6 +51,12 @@ public class OrderManagerDPImpl implements OrderManager {
 
     public static int[] processOrderItem(int amount, int[] currencies) throws UndeliverableOrderException {
 
+        /*
+        int[] dp: stores at index i the number of ways in which amount i can be paid with given currencies (dp[0] = 1
+        since there is nothing to pay there).
+
+        ArrayList<String>[] payments: stores at index i all currency combinations that equals amount i.
+         */
         int[] dp = new int[amount + 1];
         ArrayList<String>[] payments = new ArrayList[amount + 1];
         for (int i = 0; i < payments.length; i++) {
@@ -62,6 +68,13 @@ public class OrderManagerDPImpl implements OrderManager {
         for (int currency : currencies) {
             for (int amt = 1; amt < dp.length; amt++) {
                 if (amt - currency >= 0 && dp[amt - currency] != 0) {
+                    /*
+                    This is the case when (amount - currency) difference can actually be paid with some currency
+                    combination explored in previous iterations.
+
+                    Currencies required to pay current amount are those required to pay (amount - currency) plus current
+                    currency.
+                     */
                     dp[amt] += 1;
                     String payment = payments[amt - currency].size() > 0 ?
                             (payments[amt - currency].get(payments[amt - currency].size() - 1) + currency + " ")
