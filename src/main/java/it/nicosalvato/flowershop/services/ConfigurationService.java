@@ -35,6 +35,7 @@ public class ConfigurationService {
 
     public void loadFromJson(String json) throws ConfigurationException {
         try {
+            productRepository.clear();
             List<Product> products = new ObjectMapper().readValue(json, new TypeReference<List<Product>>() {});
             products.forEach(product -> productRepository.save(product));
         } catch (JsonProcessingException e) {
