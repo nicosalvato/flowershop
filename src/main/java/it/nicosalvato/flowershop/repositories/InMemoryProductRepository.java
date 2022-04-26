@@ -31,13 +31,7 @@ public class InMemoryProductRepository implements ProductRepository {
     }
 
     @Override
-    public Bundle findByProductCodeAndBundleSize(String code, int size) {
-        Product product = products.stream().filter(p -> p.getCode().equals(code)).findFirst().orElseThrow();
-        return product.getBundles().stream().filter(b -> b.getBundleSize() == size).findFirst().orElseThrow();
-    }
-
-    @Override
-    public Set<Bundle> findAllByProductCode(String code) {
+    public Set<Bundle> findAllBundlesByProductCode(String code) {
         return products.stream()
                 .filter(p -> p.getCode().equals(code))
                 .findFirst()

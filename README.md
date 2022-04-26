@@ -20,7 +20,7 @@ plugin:
 Download [flowershop-1.0.zip](https://github.com/nicosalvato/flowershop/releases/download/1.0/flowershop-1.0.zip),
 unzip it and launch it form the command line:
 ```shell
-./flowershop <order_file> <json_configuration_file> [algorithm]
+./flowershop <order_file> <json_configuration_file>
 ```
 The **order_file** is a text file containing desired items - amount and code, space separated - one per line:
 ```text
@@ -76,7 +76,4 @@ The **json_configuration_file** is a JSON (surprise) file containing a list of p
 }
 ]
 ```
-
-The **algorithm** param is optional and can either be **DP** (the default) or **TREE**,
-the latter suffering StackOverflowError for large flower orders (marriage style).
 

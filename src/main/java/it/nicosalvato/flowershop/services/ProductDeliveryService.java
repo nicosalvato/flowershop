@@ -32,7 +32,7 @@ public class ProductDeliveryService {
         if (!bundlesCount.isEmpty()) {
             itemBundles = bundlesCount.entrySet()
                     .stream()
-                    .map(entry -> new BundleDelivery(Math.toIntExact(entry.getValue()), productRepository.findAllByProductCode(productCode).stream()
+                    .map(entry -> new BundleDelivery(Math.toIntExact(entry.getValue()), productRepository.findAllBundlesByProductCode(productCode).stream()
                             .filter(bundle -> bundle.getBundleSize() == entry.getKey())
                             .findFirst()
                             .orElseThrow()))

@@ -37,7 +37,7 @@ public class OrderManagerImpl implements OrderManager {
         int orderSize = Integer.parseInt(items[0]);
         String productCode = items[1];
 
-        List<Bundle> sortedBundles = repository.findAllByProductCode(productCode).stream().sorted(Comparator.reverseOrder()).toList();
+        List<Bundle> sortedBundles = repository.findAllBundlesByProductCode(productCode).stream().sorted(Comparator.reverseOrder()).toList();
         int[] bundleItems;
         try {
             bundleItems = processOrderItem(orderSize,
