@@ -3,6 +3,7 @@ plugins {
     id "io.freefair.lombok" version "6.4.1"
     id 'com.github.johnrengelman.shadow' version '7.1.2'
     id 'application'
+    id 'jacoco'
 }
 
 group 'it.nicosalvato'
@@ -21,6 +22,21 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled false
+    }
+}
+
+check.dependsOn jacocoTestReport
+
+
+
+tasks.test {
+    finalizedBy(tasks.jacocoTestReport)
 }
 
 shadowJar {

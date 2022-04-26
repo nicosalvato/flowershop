@@ -2,6 +2,7 @@
 A flower order processor for a code interview.
 
 ![GitHub CI](https://github.com/nicosalvato/flowershop/actions/workflows/gradle.yml/badge.svg)
+[![codecov](https://codecov.io/gh/nicosalvato/flowershop/branch/main/graph/badge.svg)](https://codecov.io/gh/codecov/java-Standard)
 
 ## Getting Started
 Flower Shop is a Gradle project built with Java 17. 
