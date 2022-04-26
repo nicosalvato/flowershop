@@ -1,6 +1,7 @@
 package it.nicosalvato.flowershop.managers;
 
 import it.nicosalvato.flowershop.exceptions.UndeliverableOrderException;
+import it.nicosalvato.flowershop.pojos.delivery.ProductDelivery;
 import it.nicosalvato.flowershop.pojos.products.Bundle;
 import it.nicosalvato.flowershop.repositories.InMemoryProductRepository;
 import it.nicosalvato.flowershop.repositories.ProductRepository;
@@ -12,6 +13,8 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.function.Function;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -20,19 +23,20 @@ import java.util.stream.Collectors;
  */
 public class OrderManagerImpl implements OrderManager {
 
+    private static final Logger logger = Logger.getLogger(OrderManagerImpl.class.getName());
+
     private static final ProductRepository repository = InMemoryProductRepository.getInstance();
     private static final ProductDeliveryService productDeliveryService = ProductDeliveryService.getInstance();
 
     @Override
-    public String processOrder(InputStream order) {
+    public List<ProductDelivery> processOrder(InputStream order) {
         return new BufferedReader(
                 new InputStreamReader(order, StandardCharsets.UTF_8))
                 .lines()
-                .map(this::processOrderLine)
-                .collect(Collectors.joining("\n"));
+                .map(this::processOrderLine).toList();
     }
 
-    private String processOrderLine(String line) {
+    private ProductDelivery processOrderLine(String line) {
         String[] items = line.split(" ");
         int orderSize = Integer.parseInt(items[0]);
         String productCode = items[1];
@@ -45,9 +49,10 @@ public class OrderManagerImpl implements OrderManager {
             Map<Integer, Long> bundlesCount = Arrays.stream(bundleItems)
                     .boxed()
                     .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-            return productDeliveryService.createProductDelivery(productCode, orderSize, bundlesCount).prettyPrint();
+            return productDeliveryService.createProductDelivery(productCode, orderSize, bundlesCount);
         } catch (UndeliverableOrderException e) {
-            return productDeliveryService.createProductDelivery(productCode, orderSize).prettyPrint(e.getMessage());
+            logger.log(Level.WARNING, e.getMessage());
+            return productDeliveryService.createProductDelivery(productCode, orderSize);
         }
     }
 

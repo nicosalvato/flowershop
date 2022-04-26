@@ -1,6 +1,7 @@
 package it.nicosalvato.flowershop.managers;
 
 import it.nicosalvato.flowershop.services.ConfigurationService;
+import it.nicosalvato.flowershop.utils.ProductDeliveryPrinter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,7 +23,7 @@ public class OrderManagerImplTest {
     }
 
     @Test
-    @DisplayName("Test order 1 (10 R12)")
+    @DisplayName("Test order (10 R12)")
     void testRosesOrderProcessing() {
         String order = "10 R12";
         String expectedDelivery = """
@@ -30,11 +31,11 @@ public class OrderManagerImplTest {
                  - 1 x 10 $12.99""";
         InputStream orderAsStream = new ByteArrayInputStream(order.getBytes(StandardCharsets.UTF_8));
 
-        Assertions.assertEquals(expectedDelivery, orderManager.processOrder(orderAsStream));
+        Assertions.assertEquals(expectedDelivery, ProductDeliveryPrinter.printAsText(orderManager.processOrder(orderAsStream)));
     }
 
     @Test
-    @DisplayName("Test order 2 (15 L09)")
+    @DisplayName("Test order (15 L09)")
     void testLiliesOrderProcessing() {
         String order = "15 L09";
         String expectedDelivery = """
@@ -43,11 +44,11 @@ public class OrderManagerImplTest {
                  - 1 x 6 $16.95""";
         InputStream orderAsStream = new ByteArrayInputStream(order.getBytes(StandardCharsets.UTF_8));
 
-        Assertions.assertEquals(expectedDelivery, orderManager.processOrder(orderAsStream));
+        Assertions.assertEquals(expectedDelivery, ProductDeliveryPrinter.printAsText(orderManager.processOrder(orderAsStream)));
     }
 
     @Test
-    @DisplayName("Test order 3 (13 T58)")
+    @DisplayName("Test order (13 T58)")
     void testTulipsOrderProcessing() {
         String order = "13 T58";
         String expectedDelivery = """
@@ -56,11 +57,11 @@ public class OrderManagerImplTest {
                  - 1 x 3 $5.95""";
         InputStream orderAsStream = new ByteArrayInputStream(order.getBytes(StandardCharsets.UTF_8));
 
-        Assertions.assertEquals(expectedDelivery, orderManager.processOrder(orderAsStream));
+        Assertions.assertEquals(expectedDelivery, ProductDeliveryPrinter.printAsText(orderManager.processOrder(orderAsStream)));
     }
 
     @Test
-    @DisplayName("Test order 4 (10 R12, 15 L09, 13 T58)")
+    @DisplayName("Test order (10 R12, 15 L09, 13 T58)")
     void testCompoundOrderProcessing() {
         String order = """
                 10 R12
@@ -77,7 +78,7 @@ public class OrderManagerImplTest {
                  - 1 x 3 $5.95""";
         InputStream orderAsStream = new ByteArrayInputStream(order.getBytes(StandardCharsets.UTF_8));
 
-        Assertions.assertEquals(expectedDelivery, orderManager.processOrder(orderAsStream));
+        Assertions.assertEquals(expectedDelivery, ProductDeliveryPrinter.printAsText(orderManager.processOrder(orderAsStream)));
     }
 
     @Test
@@ -89,7 +90,7 @@ public class OrderManagerImplTest {
                  - Unable to deliver order""";
         InputStream orderAsStream = new ByteArrayInputStream(order.getBytes(StandardCharsets.UTF_8));
 
-        Assertions.assertEquals(expectedDelivery, orderManager.processOrder(orderAsStream));
+        Assertions.assertEquals(expectedDelivery, ProductDeliveryPrinter.printAsText(orderManager.processOrder(orderAsStream)));
     }
 
     @Test
@@ -101,6 +102,6 @@ public class OrderManagerImplTest {
                  - Unable to deliver order""";
         InputStream orderAsStream = new ByteArrayInputStream(order.getBytes(StandardCharsets.UTF_8));
 
-        Assertions.assertEquals(expectedDelivery, orderManager.processOrder(orderAsStream));
+        Assertions.assertEquals(expectedDelivery, ProductDeliveryPrinter.printAsText(orderManager.processOrder(orderAsStream)));
     }
 }

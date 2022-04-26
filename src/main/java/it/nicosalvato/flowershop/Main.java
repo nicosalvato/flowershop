@@ -4,6 +4,7 @@ import it.nicosalvato.flowershop.exceptions.UndeliverableOrderException;
 import it.nicosalvato.flowershop.managers.OrderManager;
 import it.nicosalvato.flowershop.managers.OrderManagerImpl;
 import it.nicosalvato.flowershop.services.ConfigurationService;
+import it.nicosalvato.flowershop.utils.ProductDeliveryPrinter;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -26,7 +27,7 @@ public class Main {
             System.out.println("Configuring products...");
             configurationService.loadFromFile(confPath);
             System.out.println("Processing order using " + orderManager.getClass().getSimpleName() + " class...");
-            System.out.println(orderManager.processOrder(new FileInputStream(flowerOrder)));
+            System.out.println(ProductDeliveryPrinter.printAsText(orderManager.processOrder(new FileInputStream(flowerOrder))));
             System.exit(0);
         } catch (FileNotFoundException e) {
             System.out.println("Please provide a valid flower order path! (" + e.getMessage() + ")");
