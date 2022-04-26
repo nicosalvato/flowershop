@@ -6,10 +6,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 
@@ -24,42 +21,90 @@ public class ConfigurationServiceTest {
     }
 
     @Test
-    void testConfiguration1Deserialization() throws FileNotFoundException {
-        String configuration = new BufferedReader(
-                new InputStreamReader(
-                        new FileInputStream("src/test/resources/configuration_1.json"),
-                        StandardCharsets.UTF_8))
-                .lines()
-                .collect(Collectors.joining("\n"));
+    void testSimpleConfDeserialization() {
+        String conf = """
+                [
+                  {
+                    "name": "Roses",
+                    "code": "R12"
+                  }
+                ]""";
 
-        configurationService.loadFromJson(configuration);
+        configurationService.loadFromJson(conf);
         Assertions.assertEquals(1, productRepository.count());
     }
 
     @Test
-    void testConfiguration2Deserialization() throws FileNotFoundException {
-        String configuration = new BufferedReader(
-                new InputStreamReader(
-                        new FileInputStream("src/test/resources/configuration_2.json"),
-                        StandardCharsets.UTF_8))
-                .lines()
-                .collect(Collectors.joining("\n"));
+    void testConfDeserialization() {
+        String conf = """
+                [
+                   {
+                     "name": "Roses",
+                     "code": "R12",
+                     "bundles": [
+                       {
+                         "bundleSize": 3,
+                         "price": 5.95
+                       }
+                     ]
+                   }
+                 ]""";
 
-        configurationService.loadFromJson(configuration);
+        configurationService.loadFromJson(conf);
         Assertions.assertEquals(1, productRepository.count());
         Assertions.assertEquals(1, productRepository.findByCode("R12").getBundles().size());
     }
 
     @Test
-    void testConfiguration3Deserialization() throws FileNotFoundException {
-        String configuration = new BufferedReader(
-                new InputStreamReader(
-                        new FileInputStream("src/test/resources/configuration_3.json"),
-                        StandardCharsets.UTF_8))
-                .lines()
-                .collect(Collectors.joining("\n"));
+    void testFullConfDeserialization() {
+        String conf = """
+                [
+                  {
+                    "code": "R12",
+                    "name": "Roses",
+                    "bundles": [
+                      {
+                        "bundleSize": 5,
+                        "price": 6.99
+                      }, {
+                        "bundleSize": 10,
+                        "price": 12.99
+                      }
+                    ]
+                  }, {
+                  "code": "L09",
+                  "name": "Lilies",
+                  "bundles": [
+                    {
+                      "bundleSize": 3,
+                      "price": 9.95
+                    }, {
+                      "bundleSize": 6,
+                      "price": 16.95
+                    }, {
+                      "bundleSize": 9,
+                      "price": 24.95
+                    }
+                  ]
+                }, {
+                  "code": "T58",
+                  "name": "Tulips",
+                  "bundles": [
+                    {
+                      "bundleSize": 3,
+                      "price": 5.95
+                    }, {
+                      "bundleSize": 5,
+                      "price": 9.95
+                    }, {
+                      "bundleSize": 9,
+                      "price": 16.99
+                    }
+                  ]
+                }
+                ]""";
 
-        configurationService.loadFromJson(configuration);
+        configurationService.loadFromJson(conf);
         Assertions.assertEquals(3, productRepository.count());
         Assertions.assertEquals(2, productRepository.findByCode("R12").getBundles().size());
         Assertions.assertEquals(3, productRepository.findByCode("L09").getBundles().size());

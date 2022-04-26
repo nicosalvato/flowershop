@@ -2,7 +2,7 @@ package it.nicosalvato.flowershop;
 
 import it.nicosalvato.flowershop.exceptions.UndeliverableOrderException;
 import it.nicosalvato.flowershop.managers.OrderManager;
-import it.nicosalvato.flowershop.managers.OrderManagerFactory;
+import it.nicosalvato.flowershop.managers.OrderManagerImpl;
 import it.nicosalvato.flowershop.services.ConfigurationService;
 
 import java.io.FileInputStream;
@@ -18,10 +18,9 @@ public class Main {
 
         String flowerOrder = args[0];
         String confPath = args[1];
-        String processor = args.length > 2 ? args[2] : "DP";
 
         ConfigurationService configurationService = ConfigurationService.getInstance();
-        OrderManager orderManager = OrderManagerFactory.getInstance(processor);
+        OrderManager orderManager = new OrderManagerImpl();
 
         try {
             System.out.println("Configuring products...");
@@ -35,9 +34,6 @@ public class Main {
         } catch (UndeliverableOrderException e) {
             System.out.println(e.getMessage());
             System.exit(1);
-        } catch (StackOverflowError e) {
-            System.out.println("Do you really need this much flowers? Please retry using DP processor :)");
-            System.exit(1);
         } catch (Exception e) {
             System.out.println("Something went wrong! (" + e.getMessage() + ")");
             System.exit(1);
@@ -45,6 +41,6 @@ public class Main {
     }
 
     private static void printHelp() {
-        System.out.println("Usage: flowershop <order_filepath> <json_configuration_filepath> [processor('DP' or 'TREE')]");
+        System.out.println("Usage: flowershop <order_filepath> <json_configuration_filepath>");
     }
 }

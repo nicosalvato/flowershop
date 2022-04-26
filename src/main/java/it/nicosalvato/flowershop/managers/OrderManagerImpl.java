@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
  * This is an efficient dynamic programming approach to the coin change problem.
  * Credits for this algorithm go to someone else.
  */
-public class OrderManagerDPImpl implements OrderManager {
+public class OrderManagerImpl implements OrderManager {
 
     private static final ProductRepository repository = InMemoryProductRepository.getInstance();
     private static final ProductDeliveryService productDeliveryService = ProductDeliveryService.getInstance();
@@ -27,7 +27,9 @@ public class OrderManagerDPImpl implements OrderManager {
     public String processOrder(InputStream order) {
         return new BufferedReader(
                 new InputStreamReader(order, StandardCharsets.UTF_8))
-                .lines().map(this::processOrderLine).collect(Collectors.joining("\n"));
+                .lines()
+                .map(this::processOrderLine)
+                .collect(Collectors.joining("\n"));
     }
 
     private String processOrderLine(String line) {
